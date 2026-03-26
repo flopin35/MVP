@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get a Website for Your Business in Minutes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1a202c;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .trust-line {
+            font-size: 0.95rem;
+            color: #667eea;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .social-proof {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-top: 15px;
+            font-weight: 500;
+        }
+
+        #msg {
+            margin-top: 30px;
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: 600;
+            min-height: 30px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Get Your Business Online in Minutes — No Coding Needed</h1>
+        <p>Simple, fast and affordable websites for small businesses.</p>
+        <div class="trust-line">✨ Join others already interested 🚀</div>
+        <button onclick="handleClick()">🚀 Get My Website Now</button>
+        <div class="social-proof">Trusted by small businesses (Beta)</div>
+        <p id="msg"></p>
+    </div>
+
+    <script>
+        const BACKEND_URL = "http://localhost:5000"; // Change this when deploying
+        let clicked = false; // CRITICAL FIX: Only allow 1 click per visit
+        let currentVisitId = null; // Track visit ID for analytics
+
+        // Track visit on page load
+        function trackVisit() {
+            console.log("📍 Attempting to track visit to:", BACKEND_URL + "/track-visit");
+            fetch(BACKEND_URL + "/track-visit", {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log("📍 Response received:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("✅ Visit tracked successfully:", data);
+                currentVisitId = data.id; // Store visit ID for click tracking
+                window.localStorage.setItem('currentVisitId', currentVisitId);
+            })
+            .catch(error => {
+                console.log("⚠️ Visit tracking - Backend may not be running");
+                console.log("Error details:", error);
+            });
+        }
+
+        // Handle button click
+        function handleClick() {
+            // CRITICAL FIX: Prevent multiple clicks from same visit
+            if (clicked) {
+                console.log("⚠️ Already clicked - ignoring duplicate click");
+                return;
+            }
+            clicked = true;
+
+            const visitId = window.localStorage.getItem('currentVisitId');
+            const url = BACKEND_URL + "/track-click" + (visitId ? `?visit_id=${visitId}` : "");
+            
+            console.log("📍 Attempting to track click to:", url);
+            fetch(url, {
+                method: "POST",
+                mode: "cors",
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                console.log("📍 Response received:", response.status);
+                return response.json();
+            })
+            .then(data => {
+                console.log("✅ Click tracked successfully:", data);
+            })
+            .catch(error => {
+                console.log("⚠️ Click tracking - Backend may not be running");
+                console.log("Error details:", error);
+            });
+
+            document.getElementById("msg").innerText =
+                "🚀 Coming soon! You're early.";
+        }
+
+        // Track visit when page loads
+        console.log("🚀 Page loaded - Backend URL set to:", BACKEND_URL);
+        window.addEventListener("load", trackVisit);
+    </script>
+</body>
+</html>
