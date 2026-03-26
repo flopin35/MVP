@@ -82,6 +82,49 @@
             font-weight: 500;
         }
 
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            animation: logoFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        .header-with-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .generated-logo {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
         #msg {
             margin-top: 30px;
             font-size: 1.1rem;
@@ -119,7 +162,22 @@
 </head>
 <body>
     <div class="container">
-        <h1>Get Your Business Online in Minutes — No Coding Needed</h1>
+        <div class="header-with-logo">
+            <svg class="generated-logo" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <!-- Random generated logo -->
+                <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+                    </linearGradient>
+                </defs>
+                <rect width="100" height="100" rx="15" fill="url(#logoGrad)"/>
+                <circle cx="50" cy="35" r="12" fill="white" opacity="0.9"/>
+                <path d="M 30 60 Q 50 75 70 60" stroke="white" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <rect x="35" y="70" width="30" height="4" rx="2" fill="white" opacity="0.7"/>
+            </svg>
+            <h1>Get Your Business Online in Minutes — No Coding Needed</h1>
+        </div>
         <p>Simple, fast and affordable websites for small businesses.</p>
         <div class="trust-line">✨ Join others already interested 🚀</div>
         <button onclick="handleClick()">🚀 Get My Website Now</button>
